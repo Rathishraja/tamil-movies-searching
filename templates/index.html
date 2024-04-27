@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamil Movies</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Tamil Movies</a>
+    </nav>
+
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-2">Welcome to Tamil Movies</h1>
+            <p class="lead">Explore the world of Tamil cinema with us</p>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Select Genre</h5>
+                    </div>
+                    <div class="card-body">
+                        <select id="genres" class="form-control" onchange="getMovies()">
+                            <option value="Action">Action</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Drama">Drama</option>
+                            <!-- Add more genre options here if needed -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-lg-8 offset-lg-2">
+                <table id="movies_table" class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Movie Name</th>
+                            <th>Rating</th>
+                            <th>Director</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Movie data will be inserted here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getMovies() {
+            var selectedGenre = document.getElementById("genres").value;
+            fetch('/movies/' + selectedGenre)
+            .then(response => response.json())
+            .then(data => {
+                var tableBody = document.querySelector("#movies_table tbody");
+                tableBody.innerHTML = ""; 
+                data.forEach(movie => {
+                    var row = tableBody.insertRow();
+                    var nameCell = row.insertCell(0);
+                    var ratingCell = row.insertCell(1);
+                    var directorCell = row.insertCell(2);
+                    nameCell.textContent = movie['Movie Name'];
+                    ratingCell.textContent = movie['Rating'];
+                    directorCell.textContent = movie['Director'];
+                });
+            });
+        }
+        getMovies(); 
+    </script>
+
+</body>
+</html>
